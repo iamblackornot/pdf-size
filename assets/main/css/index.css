@@ -1,0 +1,56 @@
+.page-container {
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+.board-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slider-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    flex-direction: column;
+    margin: auto;
+
+    row-gap: 10px;
+}
+.input-container {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+.notification-container {
+    display: flex;
+    justify-content: center;
+}
+/* #sliderjs {
+    width: 100%;
+}
+
+#sliderjs .slider-selection {
+	background: #8283FF;
+}
+#sliderjs .slider-handle {
+	background-image: linear-gradient(to bottom, #8283FF, #8283FF);
+}
+#sliderjs .slider-track {
+    background-image: linear-gradient(to bottom, #8889ff, #F9F9F9);
+}
+   */
+#image {
+    position: absolute;
+    width: 400px;
+}
