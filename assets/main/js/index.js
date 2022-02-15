@@ -1,8 +1,12 @@
 initComponents = () => {
     setInputValue('slider', 50);
+    $('#board-width').text(boardWidth);
+    $('#board-height').text(boardHeight);
+
     disableComponent("slider");
     disableComponent("width");
     disableComponent("height");
+
     $("#slider").on("input", OnSliderChange);
     $("#width").on("input", onWidthInput);
     $("#height").on("input", onHeightInput);
@@ -81,7 +85,6 @@ $('form').on('submit', function (e) {
                 type: "POST",
                 dataType: "JSON",
                 data: info,
-                timeout: 10000,
                 complete: () => { setUIUploadCompleted(); },
             })
         ).then(onRequestSuccess)
@@ -92,13 +95,15 @@ $('form').on('submit', function (e) {
 });
 
 onRequestSuccess = (res) => {
-
-    showPosterPreview(res.base64image, res.width, res.height);
-    enableComponent("slider");
-    enableComponent("width");
-    enableComponent("height");
-    resetNotifications();
-    notify(`${res.width} x ${res.height}`);
+    if(showPosterPreview(res.base64image, res.width, res.height)) {
+        resetNotifications();
+        enableComponent("slider");
+        enableComponent("width");
+        enableComponent("height");
+        
+        $('#pdf-width').text(round(res.width, 2));
+        $('#pdf-height').text(round(res.height, 2));
+    }
     //console.log(response);
 }
 
@@ -120,12 +125,12 @@ onRequestError = (jqXHR) => {
 const boardWidth = 96;
 const boardHeight = 48;
 
-const minPrintingWidth = 36;
-const minPrintingHeight = 24;
+const minPrintingWidth = 1;
+const minPrintingHeight = 1;
 
 let ratio = 1;
 let useWidth = true;
-let minPrinSize = minPrintingWidth;
+let minPrintSize = minPrintingWidth;
 
 calcPDFSize = (width, height, minPrintSize) => {
 
@@ -144,19 +149,27 @@ calcPDFSize = (width, height, minPrintSize) => {
     }
 }
 
-calcPrintMinSize = () => {
+calcPrintMinSize = (useWidth, ratio) => {
 
     if(useWidth) {
-
         if(minPrintingWidth / ratio < minPrintingHeight) {
-            return round(minPrintingHeight * ratio, 2);
+            const newWidth = round(minPrintingHeight * ratio, 2);
+            if(newWidth <= boardWidth) {
+                return newWidth;
+            } else {
+                return 0;
+            }
         } else {
             return minPrintingWidth;
         }
     } else {
-
         if(minPrintingHeight * ratio < minPrintingWidth) {
-            return round(minPrintingWidth / ratio, 2);
+            const newHeight = round(minPrintingWidth / ratio, 2);
+            if(newHeight <= boardHeight) {
+                return newHeight;
+            } else {
+                return 0;
+            }
         } else {
             return minPrintingHeight;
         }
@@ -172,29 +185,32 @@ setInputs = (pdfSize) => {
 }
 
 showPosterPreview = (base64img, width, height) => {
+
+    newUseWidth = width / height >= boardWidth / boardHeight;
+    newRatio = width / height; 
+    minPrintSize = calcPrintMinSize(newUseWidth, newRatio);  
+
+    if(minPrintSize === 0) {
+        notifyError('pdf size is not supported (pdf width/height ratio is too large or too small)');
+        return false;
+    }
+
     $("#image").attr('src', 'data:image/png;base64,' + base64img);
 
-    useWidth = width / height >= boardWidth / boardHeight;
-    ratio = width / height;
+    useWidth = newUseWidth;
+    ratio = newRatio;
+    const pdfSize = calcPDFSize(width, height, minPrintSize);
+    const boardMaxSize = useWidth ? boardWidth : boardHeight; 
 
-    const boardMaxSize = useWidth ? boardWidth : boardHeight;
-    //const printMinSize = useWidth ? minPrintingWidth : minPrintingHeight;
-    minPrinSize = calcPrintMinSize();
-    const pdfSize = calcPDFSize(width, height, minPrinSize);
-
-    //add check that other dimension is larger than minPrintSize
-
-    // slider.options.min = printMinSize;
-    // slider.options.max = boardMaxSize;
-    // slider.setValue(pdfSize);
-
-    $("#slider").attr('min', minPrinSize);
+    $("#slider").attr('min', minPrintSize);
     $("#slider").attr('max', boardMaxSize);
     setInputValue('slider', pdfSize);
 
     setInputs(pdfSize);
 
     OnSliderChange();
+
+    return true;
 }
 
 
@@ -295,8 +311,10 @@ resetNotifications = () => {
 }
 //const serverURL = "https://webhook.site/641668fe-da37-4bb4-bfc3-7991d00239c8";
 //const serverURL = "http://localhost:3020/size";
-//const serverURL = "http://143.198.54.164:3020/size";
-const serverURL = "http://134.122.86.95:3020/size";
+//const serverURL = "https://143.198.54.164:3030/size";
+const serverURL = "https://posterpresentations.ddns.net:3030/size";
+//const serverURL = "https://134.122.86.95:3030/size";
+//const serverURL = "middleware.php";
 
 initComponents();
 

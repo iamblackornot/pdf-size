@@ -1,3 +1,9 @@
+input {
+    text-align: center;
+}
+.info-container {
+    text-align: center;
+}
 .page-container {
     width: fit-content;
     margin: auto;

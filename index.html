@@ -19,13 +19,17 @@
                 <img id="image" alt="Poster" src="poster.jpg"/>
                 <img id="board" alt="Board" src="board.png"/>
             </div>
+            <div class="info-container">
+                Board size: <span id="board-width"></span>x<span id="board-height"></span> inches.
+                Original Poster size: <span id="pdf-width"></span>x<span id="pdf-height"></span> inches.
+            </div>
             <div class="slider-container">
                 <div class="input-container"> 
                     <input type="text" id="width" maxlength="5" size="5">
                     <div>x</div>
                     <input type="text" id="height" maxlength="5" size="5">
                 </div>
-                <input type="range" class="form-range" min="0" max="100" step="0.1" value="40" id="slider"> 
+                <input type="range" class="form-range" min="0" max="100" step="0.01" value="40" id="slider"> 
             </div>
             <form class="button-container">
                 <input type="file" name="file" id="browse" accept=".pdf" required>
