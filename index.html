@@ -1,44 +1,421 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-        <link rel="stylesheet" href="assets/main/css/index.css">
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-        <script src="assets/main/js/jquery.min.js" defer></script>
-        <script src="assets/bootstrap/js/bootstrap.min.js" defer></script>
-    </head>
-    <body>
-        <script>0</script>
-        <div class="page-container">
-            <div class="board-container">
-                <img id="image" alt="Poster" src="poster.jpg"/>
-                <img id="board" alt="Board" src="board.png"/>
-            </div>
-            <div class="info-container">
-                Board size: <span id="board-width"></span>x<span id="board-height"></span> inches.
-                Original poster size: <span id="pdf-width"></span>x<span id="pdf-height"></span> inches.
-            </div>
-            <div class="slider-container">
-                <div class="input-container"> 
-                    <input type="text" id="width" maxlength="5" size="5">
-                    <div>x</div>
-                    <input type="text" id="height" maxlength="5" size="5">
-                </div>
-                <input type="range" class="form-range" min="0" max="100" step="0.01" value="40" id="slider"> 
-            </div>
-            <form class="button-container">
-                <input type="file" name="file" id="browse" accept=".pdf" required>
-                <input type="submit" id="upload" value="Upload">
-            </form>
-            <div class="notification-container" id="notify">test</div>
-        </div>
-        
+<html  >
+<head>
+  
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/round-logo-576px-128x128.png" type="image/x-icon">
+  <meta name="description" content="Virtual presentation admin panel - Enter your password">
+  
+  
+  <title>Virtual presentation admin | PosterPresentations.com</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel='stylesheet' href='./assets/private/private.css'>
+  <link rel="stylesheet" href="assets/main/css/index.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+</head>
+<body class="d-flex flex-column min-vh-100">
 
-        <script src="assets/main/js/index.js" defer></script>
-    </body>
+  <script src="assets/web/assets/jquery/jquery.min.js"></script>
+  
+  <section class="menu1 menu carm4_menu1 cid-syK010d3gD" once="menu" id="menu1-0">  
+    <nav class="navbar navbar-dropdown align-items-center navbar-toggleable-sm">
+        <div class="menu-content-top">
+            <div class="mbr-overlay" style="opacity: 1;"></div>
+            <div class="container">
+                <div class="row w-100">
+                    <div class="col">
+                        <div class="d-lg-flex justify-content-lg-end align-items-lg-center">
+                            <div class="menu-logo">
+                                <div class="navbar-brand">
+                                    <span class="navbar-logo">
+                                        <a href="#">
+                                            <img src="assets/images/round-logo-576px-128x128.png" alt="" style="height: 4rem;">
+                                        </a>
+                                    </span>
+                                    <span class="navbar-caption-wrap"><a href="https://www.posterpresentations.com/index.html" class="brand-link mbr-white mbr-bold text-white text-primary display-5">PosterPresentations.com</a></span>
+                                </div>
+                            </div>
+                            <div class="menu-content-right text-white">
+                                <div class="info-widget">
+                                    <div class="widget-content display-4">
+                                        <p class="widget-title mbr-fonts-style display-7">
+                                            Contact Us</p>
+                                        <p class="widget-text mbr-fonts-style display-4">1.866.649.3004</p>
+                                    </div>
+                                </div>
+                                <div class="info-widget">
+                                    <div class="widget-content display-4">
+                                        <p class="widget-title mbr-fonts-style display-7">
+                                            Hours</p>
+                                        <p class="widget-text mbr-fonts-style display-4">M-F 9 AM - 5 PM</p>
+                                    </div>
+                                </div>
+                                
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="menu-bottom">
+            <div class="mbr-overlay2" style="opacity: 1;"></div>
+            <div class="container">
+                <div class="row w-100">
+                    <div class="col">
+                        <div class="d-flex menu-wrap">
+                            <div class="navbar-brand-bottom pt-1">
+                                <span class="navbar-logo">
+                                    <a href="https://www.posterpresentations.com">
+                                        <img src="assets/images/round-logo-w-name-logo-posterpresentaions-610px-610x95.png" alt="PosterPresentations.com" style="height: 4rem;">
+                                    </a>
+                                </span>
+                                <span class="navbar-caption-wrap">
+                                    <a href="#" class="brand-link mbr-white mbr-bold display-5">
+                                        CarM4</a>
+                                </span>
+                            </div>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav nav-dropdown js-float-line nav-right" data-app-modern-menu="true"><li class="nav-item">
+                                        <a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/">
+                                            Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/price-guide.html" aria-expanded="false">Pricing</a>
+                                        
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/free-poster-templates.html">Research Poster Templates</a>
+                                    </li><li class="nav-item"><a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/helpdesk.html">Tutorials</a></li><li class="nav-item"><a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/design/design.html">Design</a></li><li class="nav-item"><a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/research/groups/virtual-poster-presentations-for-groups.html">Virtual</a></li><li class="nav-item"><a class="nav-link link mbr-black text-primary display-7" href="https://www.posterpresentations.com/faqs.html">FAQ</a></li><li class="nav-item"><a class="nav-link link mbr-black text-primary display-7" href="client-testimonials.html">Reviews</a></li></ul>
+                                <div class="icons-menu">
+                                    <a href="#" target="_blank">
+                                        <span class="p-2 mbr-iconfont mobi-mbri-search mobi-mbri" style="color: rgb(255, 255, 255); fill: rgb(255, 255, 255);"></span>
+                                    </a>
+                                    <a href="#" target="_blank">
+                                        <span class="p-2 mbr-iconfont mobi-mbri-cart-add mobi-mbri" style="color: rgb(255, 255, 255); fill: rgb(255, 255, 255);"></span>
+                                    </a>
+                                    <a href="#" target="_blank">
+                                        <span class="p-2 mbr-iconfont mobi-mbri-users mobi-mbri" style="color: rgb(255, 255, 255); fill: rgb(255, 255, 255);"></span>
+                                    </a>
+                                    
+                                    
+                                    
+                                </div>
+                            </div>
+                            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <div class="hamburger">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+
+<div id="custom-html-5w"><hr style="height:100px;border:none;color:#447733;background-color:#efefef;">
+</div>
+
+<div id="custom-html-5v"><hr></div>
+
+<section class="cid-sSfKjzHx9G" id="content7-77">
+
+<!-- content -->    
+ 
+    <div class="page-container">
+        <div class="board-container">
+            <img id="image" src=""/>
+            <img id="board" alt="Board" src="assets/main/board.png"/>
+        </div>
+        <div class="info-container">
+            Board size: <span id="board-width"></span> x <span id="board-height"></span> inches.
+            Original poster size: <span id="pdf-width"></span> x <span id="pdf-height"></span> inches.
+        </div>
+        <div class="slider-container">
+            <div class="input-container"> 
+                <input type="text" id="width" maxlength="5" size="5">
+                <div>x</div>
+                <input type="text" id="height" maxlength="5" size="5">
+            </div>
+            <input type="range" class="form-range" min="0" max="100" step="0.01" value="50" id="slider"> 
+        </div>
+
+        <div class="notification-container" id="notify"></div>
+
+        <div class="button-container">
+            <form>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input class="custom-file-input" type="file" id="browse" aria-describedby="browse" accept=".pdf" required>
+                        <label class="custom-file-label" id="file-name" for="browse">Choose file...</label>
+                    </div>
+                    <input class="btn btn-primary btn-sm ml-3 mt-0 mb-0 mr-0" type="submit" id="upload" value="Upload">
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+<!-- content end -->
+
+</section>
+
+
+<script>0</script>
+<script src="assets/main/js/index.js" defer></script>
+
+<section class="footer1 cid-szSMy6XCm6 mt-auto" once="footers" id="footer01-13">
+    
+    
+    <div class="container">
+        <div class="row align-left">
+
+
+            <div class="col-md-6 col-lg-3">
+
+              
+
+                    <h3 class="title pb-2 align-left mbr-bold mbr-fonts-style display-7">PosterPresentations.com</h3>
+
+                    <p class="mbr-text align-left mbr-white mbr-regular mbr-fonts-style display-4">Copyright © 2022<br></p>
+
+            
+         
+
+
+            </div>
+
+            
+                        <div class="col-md-6 col-lg-3">
+
+                <h2 class="title mbr-bold pb-2 mbr-fonts-style display-5">Poster Printing</h2>
+
+                <div class="align-wrap">
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+                           
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4">
+                                <a href="https://www.posterpresentations.com/order-and-upload-paper-poster.html" target="_blank" class="text-white">Research paper posters</a><br></p>
+                        </div>
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                            
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/order-foldable-fabric-poster-printing.html" class="text-white">Fabric posters</a></p>
+
+
+                        </div>
+
+                    </div>
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                         
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/trifold-order-and-upload.html" target="_blank" class="text-white">Trifold poster boards</a></p>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                         
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/banner-stands.html" target="_blank" class="text-white">Rollup banners</a><br></p>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                           
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/dry-erase-poster-printing.html" target="_blank" class="text-white">Dry-erase &nbsp;posters</a></p>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+            
+            
+
+            <div class="col-md-6 col-lg-3">
+
+                <h2 class="title mbr-bold pb-2 mbr-fonts-style display-5">Support</h2>
+
+                <div class="align-wrap">
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+                            
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/free-poster-templates.html" class="text-white">PowerPoint poster templates</a><br></p>
+                        </div>
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                     
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/helpdesk.html" class="text-white">Poster-making tutorials</a></p>
+
+
+                        </div>
+
+                    </div>
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                          
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/how-to-add-our-poster-templates-to-google-slides.html" target="_blank" class="text-white">Google Slides support</a></p>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                           
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/free-qr-code-generator.html" target="_blank" class="text-white">QR code generator (free)</a></p>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                          
+
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/design.html" class="text-white">Poster design services</a></p>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+
+                <h2 class="title mbr-bold pb-2 mbr-fonts-style display-5">
+                    New Services</h2>
+
+                <div class="align-wrap">
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+                            
+                            <p class="icon-title mbr-regular mbr-fonts-style display-4"><a href="https://www.posterpresentations.com/research/groups/virtual-poster-presentations-for-groups.html" target="_blank" class="text-white text-primary">Virtual poster presentations</a></p>
+                        </div>
+                    </div>
+
+                    <div class="item-wrap">
+                        <div class="icons-wrap pb-2">
+
+                         
+
+                            <li class="icon-title mbr-regular mbr-fonts-style display-4"></li></div>
+
+                    </div>
+                    <div class="item-wrap">
+                        
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        
+
+
+                    </div>
+
+                    <div class="item-wrap">
+                        
+
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+            <div class="col-md-6 col-lg-3">
+                <h2 class="title mbr-bold pb-2 mbr-fonts-style display-5">
+                    Social</h2>
+                   <div class="socicon-wrap">
+                    <a href="https://twitter.com/PosterPresenter" target="_blank"><span class="mbr-iconfont socicon-twitter socicon"></span></a>
+                    <a href="https://www.instagram.com/posterpresentations/" target="_blank"><span class="mbr-iconfont socicon-instagram socicon"></span></a>
+                    <a href="https://www.youtube.com/user/PosterPresentations" target="_blank"><span class="mbr-iconfont socicon-youtube socicon"></span></a>
+                    <a href="https://www.facebook.com/PosterPresenter/"><span class="mbr-iconfont socicon-facebook socicon"></span></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+  <script src="assets/popper/popper.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/smoothscroll/smooth-scroll.js"></script>
+  <script src="assets/admin/dropdown/js/nav-dropdown.js"></script>
+  <script src="assets/admin/dropdown/js/navbar-dropdown.js"></script>
+  <script src="assets/admin/touchswipe/jquery.touch-swipe.min.js"></script>
+  <script src="assets/admin/theme/js/script.js"></script>
+  
+  
+  
+
+</body>
 </html>

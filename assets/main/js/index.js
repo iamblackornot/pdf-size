@@ -1,5 +1,8 @@
 initComponents = () => {
     setInputValue('slider', 50);
+    setInputValue('width', '');
+    setInputValue('height', '');
+
     $('#board-width').text(boardWidth);
     $('#board-height').text(boardHeight);
 
@@ -10,6 +13,13 @@ initComponents = () => {
     $("#slider").on("input", OnSliderChange);
     $("#width").on("input", onWidthInput);
     $("#height").on("input", onHeightInput);
+
+    $('#browse').on("change", () => {
+        var fileName = $('#browse').val().split('\\').pop();
+        $('#file-name').text(fileName);
+    });
+
+    setInputValue('slider', 50);
 }
 
 changeComponentText = (id, text) => {
@@ -218,6 +228,8 @@ showPosterPreview = (base64img, width, height) => {
 OnSliderChange = () => {
 
     const value = getInputValue('slider');
+
+    console.log(value);
 
     if(useWidth) {
         const imageWidth = Math.round(value / boardWidth * $("#board").width());

@@ -11,6 +11,7 @@ input {
     flex-direction: column;
     column-gap: 20px;
     row-gap: 20px;
+    padding-bottom: 2rem;
 }
 .board-container {
     position: relative;
@@ -42,20 +43,6 @@ input {
     display: flex;
     justify-content: center;
 }
-/* #sliderjs {
-    width: 100%;
-}
-
-#sliderjs .slider-selection {
-	background: #8283FF;
-}
-#sliderjs .slider-handle {
-	background-image: linear-gradient(to bottom, #8283FF, #8283FF);
-}
-#sliderjs .slider-track {
-    background-image: linear-gradient(to bottom, #8889ff, #F9F9F9);
-}
-   */
 #image {
     position: absolute;
     width: 400px;
