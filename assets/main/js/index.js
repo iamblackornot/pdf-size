@@ -309,12 +309,8 @@ resetNotifications = () => {
     hideInputError('width');
     hideInputError('height');
 }
-//const serverURL = "https://webhook.site/641668fe-da37-4bb4-bfc3-7991d00239c8";
-//const serverURL = "http://localhost:3020/size";
-//const serverURL = "https://143.198.54.164:3030/size";
+
 const serverURL = "https://posterpresentations.ddns.net:3030/size";
-//const serverURL = "https://134.122.86.95:3030/size";
-//const serverURL = "middleware.php";
 
 initComponents();
 
