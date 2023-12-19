@@ -71,37 +71,38 @@ $('form').on('submit', function (e) {
     setUIUploadStart();
     e.preventDefault();
 
-    var reader = new FileReader(),
-        file = $('#browse')[0];
+    var reader = new FileReader();
+    const fileElement = $('#browse')[0];
 
-    if (!file.files.length) {
+    if (!fileElement || !fileElement.files.length) {
         notifyError('no file uploaded');
+        setUIUploadCompleted();
+        return false;
+    }
+
+    const file = fileElement.files[0];
+
+    if(file.size > maxUploadFileSizeLimitInBytes) {
+        notifyError(`Upload limit is ${maxUploadFileSizeLimitInBytes / 1024 / 1024}Mb`);
+        setUIUploadCompleted();
         return false;
     }
 
     reader.onload = function () {
-        var data = reader.result,
-            base64 = data.replace(/^[^,]*,/, ''),
-            info = {
-                pdf: base64
-            };
-
-        //console.log('data = ', data)
-        //console.log('reader onload');
-
         Promise.resolve(
             $.ajax({
                 url: serverURL,
                 type: "POST",
-                dataType: "JSON",
-                data: info,
+                contentType: "application/octet-stream",
+                data: reader.result,
+                processData: false,
                 complete: () => { setUIUploadCompleted(); },
             })
         ).then(onRequestSuccess)
          .catch(onRequestError);
     };
 
-    reader.readAsDataURL(file.files[0]);
+    reader.readAsArrayBuffer(file);
 });
 
 onRequestSuccess = (res) => {
@@ -117,17 +118,16 @@ onRequestSuccess = (res) => {
     //console.log(response);
 }
 
-onRequestError = (jqXHR) => { 
+onRequestError = (err) => { 
 
     let errMessage;
 
-    if(jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.error) {
-        errMessage = jqXHR.responseJSON.error;
+    if(err?.responseJSON?.error) {
+        errMessage = err.responseJSON.error;
     } else {
-        errMessage = jqXHR.statusText;
+        errMessage = 'server not responding';
     }
 
-    //console.log(jqXHR);
     console.log('error: ', errMessage);
     notifyError(errMessage);
 };
@@ -322,7 +322,9 @@ resetNotifications = () => {
     hideInputError('height');
 }
 
-const serverURL = "https://posterpresentations.ddns.net:3030/size";
+const serverURL = "https://posterpresentations.ddns.net:3050/ppt_preview";
+//const serverURL = "https://localhost:3030/ppt_preview";
+const maxUploadFileSizeLimitInBytes = 1024 * 1024 * 250;
 
 initComponents();
 
