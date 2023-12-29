@@ -1,8 +1,10 @@
 import UI from "../ui.js"
 import currBoard from "../board.js";
 
-const serverURL = "https://posterpresentations.ddns.net:3050/ppt_preview";
-//const serverURL = "https://localhost:3030/ppt_preview";
+const serverURL = "https://posterpresentations.ddns.net:3050/";
+//const serverURL = "http://localhost:3040/";
+const pdfEndpoint = "pdf_preview";
+const pptEndpoint = "ppt_preview";
 const maxUploadFileSizeLimitInBytes = 1024 * 1024 * 250;
 
 $('#browse').on("change", () => {
@@ -25,6 +27,14 @@ $('form').on('submit', function (e) {
     }
 
     const file = fileElement.files[0];
+    const regex = /.+\.(pdf|ppt|pptx)$/;
+    const matches = file.name.match(regex);
+
+    if(!matches) {
+        UI.notifyError('only pdf/ppt/pptx files are supported');
+        UI.setUIUploadCompleted();
+        return;
+    }
 
     if(file.size > maxUploadFileSizeLimitInBytes) {
         UI.notifyError(`Upload limit is ${ maxUploadFileSizeLimitInBytes / 1024 / 1024 }Mb`);
@@ -32,9 +42,12 @@ $('form').on('submit', function (e) {
         return;
     }
 
+    const isPdf = matches[1] === "pdf";
+    const endpoint = serverURL + (isPdf ? pdfEndpoint : pptEndpoint);
+
     reader.onload = function () {
         $.ajax({
-            url: serverURL,
+            url: endpoint,
             type: "POST",
             contentType: "application/octet-stream",
             data: reader.result,
@@ -60,7 +73,7 @@ function onRequestError(xhr, status, error) {
 
     let errMessage;
 
-    if(err?.responseJSON?.error) {
+    if(error?.responseJSON?.error) {
         errMessage = xhr.responseJSON.error;
     } else {
         errMessage = 'server not responding';
