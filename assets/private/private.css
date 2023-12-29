@@ -1,0 +1,59 @@
+.password-screen {
+    background-color: #e9e9e9;
+    height: 100vh;
+    margin: auto;
+}
+#enter-btn
+{
+    font-size: smaller;
+    margin-left: 20px;
+    padding: 0.35rem 1rem;
+}
+#emailfield
+{
+    margin-left: 20px;
+}
+.password-container
+{
+    display: flex;
+    justify-content: center;
+}
+#pass-form
+{
+    display: flex;
+    justify-content: center;
+}
+#incorrect-pass-notify
+{
+    color: crimson;
+    margin-right: 4.25rem;
+}
+
+.btn-search-private {
+    background-color: #033664 !important;
+    border-color: #033664 !important;
+}
+
+.admin-page-password {
+    height: 100vh;
+    margin: auto;
+    background-color: #e3e6ee;
+    font-size: 20px;
+}
+.admin-page {
+    height: 100vh;
+    margin: auto;
+    padding-left: 250px;
+    background-color: #e3e6ee;
+    font-size: 20px;
+}
+.select-item {
+    padding-top: 25px;
+}
+.form-check-input {
+    position: relative !important;
+}
+input[placeholder]
+{
+    text-align: center;
+}

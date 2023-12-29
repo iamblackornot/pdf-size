@@ -145,35 +145,53 @@
 <!-- content -->    
  
     <div class="page-container">
-        <div class="board-container">
-            <img id="image" src=""/>
-            <img id="board" alt="Board" src="assets/main/board.png"/>
-        </div>
-        <div class="info-container">
-            Board size: <span id="board-width"></span> x <span id="board-height"></span> inches.
-            Original poster size: <span id="pdf-width"></span> x <span id="pdf-height"></span> inches.
-        </div>
-        <div class="slider-container">
-            <div class="input-container"> 
-                <input type="text" id="width" maxlength="5" size="5">
-                <div>x</div>
-                <input type="text" id="height" maxlength="5" size="5">
-            </div>
-            <input type="range" class="form-range" min="0" max="100" step="0.01" value="50" id="slider"> 
-        </div>
-
-        <div class="notification-container" id="notify"></div>
-
-        <div class="button-container">
-            <form>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input class="custom-file-input" type="file" id="browse" aria-describedby="browse" accept=".ppt,.pptx" required>
-                        <label class="custom-file-label" id="file-name" for="browse">Choose file...</label>
-                    </div>
-                    <input class="btn btn-primary btn-sm ml-3 mt-0 mb-0 mr-0" type="submit" id="upload" value="Upload">
+        <div class="board-container">       
+            <!-- <img id="board" alt="Board" src="assets/main/board.png"/> -->
+            <div class="board" id="board">
+                <div class="onboard-label" id="onboard-label">
+                    <span id="board-width"></span> x <span id="board-height"> </span><span class="units"></span>
                 </div>
-            </form>
+                <img id="image" src=""/>
+            </div>
+        </div>
+        <div class="controls-container">
+            <div class="input-group" id="board-size-select">
+                <select class="custom-select" id="size-units-dropdown">
+                    <option selected value="0">in</option>
+                    <option value="1">mm</option>
+                </select>
+                <select class="custom-select" id="board-size-dropdown"></select>
+            </div>
+            <div class="size-input-container" id="board-size-input-container"> 
+                <input type="text" id="board-width-input" maxlength="5" size="5">
+                <div>x</div>
+                <input type="text" id="board-height-input" maxlength="5" size="5">
+            </div>
+            <div class="info-container" id="info-container">
+                Source size: <span id="source-poster-width"></span> x <span id="source-poster-height"></span> <span class="units"></span>
+            </div>
+            <div class="poster-slider-container" id="poster-slider-container">
+                <div class="size-input-container"> 
+                    <input type="text" id="poster-width" maxlength="5" size="5">
+                    <div>x</div>
+                    <input type="text" id="poster-height" maxlength="5" size="5">
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="0.01" value="50" id="slider"> 
+            </div>
+
+            <div class="notification-container" id="notify"></div>
+
+            <div class="button-container">
+                <form id="upload-form">
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input class="custom-file-input" type="file" id="browse" aria-describedby="browse" accept=".ppt,.pptx" required>
+                            <label class="custom-file-label" id="file-name" for="browse">Choose file...</label>
+                        </div>
+                        <input class="btn btn-primary btn-sm ml-3 mt-0 mb-0 mr-0" type="submit" id="upload" value="Upload">
+                    </div>
+                </form>
+            </div>
         </div>
 
     </div>
@@ -184,7 +202,7 @@
 
 
 <script>0</script>
-<script src="assets/main/js/index.js" defer></script>
+<script type="module" src="assets/main/js/index.js" defer></script>
 
 <section class="footer1 cid-szSMy6XCm6 mt-auto" once="footers" id="footer01-13">
     

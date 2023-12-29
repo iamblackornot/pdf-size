@@ -5,45 +5,110 @@ input {
     text-align: center;
 }
 .page-container {
-    width: fit-content;
     margin: auto;
     display: flex;
-    flex-direction: column;
-    column-gap: 20px;
-    row-gap: 20px;
-    padding-bottom: 2rem;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    justify-content: center;
+    column-gap: 5%;
 }
+
 .board-container {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    flex-grow: 1;
+    min-width: 500px;
+    max-width: 700px;
+    min-height: 600px;
+    max-height: 700px;
+
 }
-.slider-container {
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 20px;
+    max-width: 50%;
+    min-width: 300px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.board-size-dropdown {
+    text-align: center;
+}
+.board {
+    background-color: #232d3c;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.onboard-label {
+    color: white;
+    block-size: fit-content;
+    font-size: xx-large;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    column-gap: 0.5rem;
+}
+.poster-slider-container {
     position: relative;
     display: flex;
     justify-content: center;
-    width: fit-content;
     flex-direction: column;
-    margin: auto;
-
-    row-gap: 10px;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
 }
-.input-container {
+.size-input-container {
     display: flex;
-    justify-content: center;
-    column-gap: 20px;
+    column-gap: 1rem;
+    width: 100%;
 }
 
 .button-container {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 .notification-container {
     display: flex;
     justify-content: center;
+    white-space: pre-wrap;
 }
+
 #image {
-    position: absolute;
-    width: 400px;
+    z-index: 0;
+}
+
+#upload-form {
+    width: 100%;
+}
+
+#board-size-select {
+    column-gap: 1rem;
+}
+
+#size-units-dropdown {
+    max-width: 6rem;
+}
+
+select {
+    text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
+    -ms-text-align-last: center;
+}
+
+.input-offset {
+    width: calc(6rem - 1px);
 }
