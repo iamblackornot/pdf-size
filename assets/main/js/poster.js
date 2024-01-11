@@ -2,8 +2,10 @@ import { round, inchToMM, mmToInch } from "./misc.js"
 import UI from "./ui.js"
 import board from "./board.js"
 
-export const MIN_PRINT_WIDTH_INCH = 10;
-export const MIN_PRINT_HEIGHT_INCH = 10;
+export const MIN_PRINT_WIDTH_INCH = 24;
+export const MIN_PRINT_HEIGHT_INCH = 24;
+
+const inchSizeSnap = [ 24, 30, 36, 40, 42, 44, 47, 48, 56, 60, 64, 68, 72, 84, 90, 94, 96 ];
 
 export class Poster
 {
@@ -20,8 +22,8 @@ export class Poster
         UI.disableComponent("poster-width");
         UI.disableComponent("poster-height");
 
-        UI.hideElement("info-container");
-        UI.hideElement("poster-slider-container");
+        //UI.hideElement("info-container");
+        //UI.hideElement("poster-slider-container");
 
         $("#slider").on("input", this.onPosterSliderChange.bind(this));
         $("#poster-width").on("input", this.onPosterWidthInput.bind(this));
@@ -100,7 +102,6 @@ export class Poster
             }
 
             UI.setSliderRange("slider", minSliderValue, maxSliderValue);
-            UI.setInputValue('slider', 50);
             this.onPosterSliderChange();
 
             return; 

@@ -148,7 +148,10 @@
         <div class="board-container">       
             <!-- <img id="board" alt="Board" src="assets/main/board.png"/> -->
             <div class="board" id="board">
-                <div class="onboard-label" id="onboard-label">
+                <div class="onboard-label" id="board-tip">
+                    select the board size<br>(affects max poster size)
+                </div>
+                <div class="onboard-label" id="onboard-label" style="display:none">
                     <span id="board-width"></span> x <span id="board-height"> </span><span class="units"></span>
                 </div>
                 <img id="image" src=""/>
@@ -157,20 +160,20 @@
         <div class="controls-container">
             <div class="input-group" id="board-size-select">
                 <select class="custom-select" id="size-units-dropdown">
-                    <option selected value="0">in</option>
+                    <option value="0">in</option>
                     <option value="1">mm</option>
                 </select>
                 <select class="custom-select" id="board-size-dropdown"></select>
             </div>
-            <div class="size-input-container" id="board-size-input-container"> 
+            <div class="size-input-container" id="board-size-input-container" style="display:none"> 
                 <input type="text" id="board-width-input" maxlength="5" size="5">
                 <div>x</div>
                 <input type="text" id="board-height-input" maxlength="5" size="5">
             </div>
-            <div class="info-container" id="info-container">
+            <div class="info-container" id="info-container" style="display:none">
                 Source size: <span id="source-poster-width"></span> x <span id="source-poster-height"></span> <span class="units"></span>
             </div>
-            <div class="poster-slider-container" id="poster-slider-container">
+            <div class="poster-slider-container" id="poster-slider-container" style="display:none">
                 <div class="size-input-container"> 
                     <input type="text" id="poster-width" maxlength="5" size="5">
                     <div>x</div>
@@ -188,7 +191,7 @@
                             <input class="custom-file-input" type="file" id="browse" aria-describedby="browse" accept=".pdf,.ppt,.pptx" required>
                             <label class="custom-file-label" id="file-name" for="browse">Choose file...</label>
                         </div>
-                        <input class="btn btn-primary btn-sm ml-3 mt-0 mb-0 mr-0" type="submit" id="upload" value="Upload">
+                        <input class="btn btn-primary btn-sm ml-3 mt-0 mb-0 mr-0" type="submit" id="upload" value="Upload" disabled>
                     </div>
                 </form>
             </div>

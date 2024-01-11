@@ -100,8 +100,46 @@ export default class UI
     static setSliderRange(id, min, max) {
         $(`#${id}`).attr('min', min);
         $(`#${id}`).attr('max', max);
+
+        if(min >= max) {
+            UI.setInputValue('slider', 50);
+            //UI.disableComponent('slider');
+            return;
+        }
+
+       // UI.enableComponent('slider');
     }
     static setSpanText(id, text) {
         $(`#${id}`).text(text);
+    }
+}
+
+export class DropDownList {
+
+    constructor(id) {
+        this.dropdown = $(`#${id}`);
+    }
+
+    addOption(text) {
+        this.dropdown.append(`<option>${text}</option>`);
+    }
+    clear() {
+        this.dropdown.empty();
+    }
+    getSelectedIndex() {
+        return this.dropdown[0].selectedIndex;
+    }
+    setSelectedIndex(index) {
+
+        if(index < 0) return;
+
+        this.dropdown[0].selectedIndex = index;
+        this.dropdown.trigger('change');
+    }
+    clearSelection() {
+        this.dropdown[0].selectedIndex = -1;
+    }
+    subOnChangeEvent(delegate) {
+        this.dropdown.on('change', delegate);
     }
 }

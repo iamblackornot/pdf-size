@@ -1,12 +1,12 @@
-import UI from "./ui.js"
+import UI, { DropDownList } from "./ui.js"
 import { Poster } from "./poster.js"
 import { inchToMM, mmToInch } from "./misc.js"
 
-const MIN_BOARD_WIDTH_INCH = 10;
-const MIN_BOARD_HEIGHT_INCH = 10;
+const MIN_BOARD_WIDTH_INCH = 24;
+const MIN_BOARD_HEIGHT_INCH = 24;
 
-const MAX_BOARD_HEIGHT_INCH = 500;
-const MAX_BOARD_WIDTH_INCH = 500;
+const MAX_BOARD_HEIGHT_INCH = 96;
+const MAX_BOARD_WIDTH_INCH = 96;
 
 const sizesInch = 
 [
@@ -43,19 +43,39 @@ export class Board
         UI.disableComponent('board-height-input');
         UI.disableComponent('board-width-input');
         
-        $("#board-width-input").on("input", this.onBoardWidthInput.bind(this));
-        $("#board-height-input").on("input", this.onBoardHeightInput.bind(this));
-        $('#board-size-dropdown').on('change', this.onSizeSelectionChanged.bind(this));
-        $('#size-units-dropdown').on('change', this.onSizeUnitsChanged.bind(this));
+        UI.disableComponent('upload');
 
+        UI.setInputValue('board-width-input', '');
+        UI.setInputValue('board-height-input', '');
 
-        this.poster = new Poster(this);
+        $("#board-width-input").on("input", this.onBoardInput.bind(this));
+        $("#board-height-input").on("input", this.onBoardInput.bind(this));
+
         this.isInchUnits = true;
 
+        this.poster = new Poster(this);
+        this.sizeDropdown = new DropDownList('board-size-dropdown');
+        this.unitDropdown = new DropDownList('size-units-dropdown');
+
+        this.sizeDropdown.subOnChangeEvent(this.onSizeSelectionChanged.bind(this));
+        this.unitDropdown.subOnChangeEvent(this.onSizeUnitsChanged.bind(this));
+
         this.populateSizeDropdownList();
-        this.selectDefaultBoardSize();
+        this.sizeDropdown.clearSelection();
+
+        //this.initBoard();
+        //this.selectDefaultBoardSize();
 
         //this.changeSize(width, height);
+    }
+
+    initBoard() {
+
+        //$("#board-size-input-container")
+
+        // const dropdown = $('#size-units-dropdown');
+        // dropdown[0].selectedIndex = -1;
+        //this.populateSizeDropdownList();
     }
 
     changeSize(width, height) {
@@ -81,32 +101,29 @@ export class Board
         $(`#board`).css('aspect-ratio', this.aspectRatio.toString());
         $('.units').text(this.isInchUnits ? "in" : "mm");
 
+        UI.enableComponent('upload');
+        UI.showElement('onboard-label');
+        UI.hideElement('board-tip');
+
         this.poster.OnPosterOrBoardSizeChanged();
     }
 
-
-    onBoardWidthInput() {
+    onBoardInput() {
 
         if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_INCH, MAX_BOARD_WIDTH_INCH)) return;
-    
-        const width = UI.getInputValue('board-width-input');
-        this.changeSize(+width, this.height);
-    }
-    
-    onBoardHeightInput() {
-    
         if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_INCH, MAX_BOARD_HEIGHT_INCH)) return;
     
+        const width = UI.getInputValue('board-width-input');
         const height = UI.getInputValue('board-height-input');
-        this.changeSize(this.width, +height);
+
+        this.changeSize(+width, +height);
     }
 
     onSizeSelectionChanged(event) {
 
-        const dropdown = event.target;
         const sizeArr = this.isInchUnits ? sizesInch : sizesMM;
 
-        if(dropdown.selectedIndex == sizeArr.length) {
+        if(this.sizeDropdown.getSelectedIndex() === 0) {
             UI.showElement('board-size-input-container');
             UI.enableComponent('board-height-input');
             UI.enableComponent('board-width-input');
@@ -117,41 +134,43 @@ export class Board
         UI.disableComponent('board-height-input');
         UI.disableComponent('board-width-input');
 
-        const size = sizeArr[dropdown.selectedIndex];
+        const size = sizeArr[this.sizeDropdown.getSelectedIndex() - 1];
         this.changeSize(size.width, size.height);
     }
 
     populateSizeDropdownList() {
 
         const sizeArr = this.isInchUnits ? sizesInch : sizesMM;
-        const dropdown = $('#board-size-dropdown');
+        this.sizeDropdown.clear();
 
-        dropdown.empty();
+        this.sizeDropdown.addOption('Custom');
 
         for (let index = 0; index < sizeArr.length; index++) {
             const desc = sizeArr[index].desc ? ` (${sizeArr[index].desc})` : '';
-            dropdown.append(`<option>${sizeArr[index].width} x ${sizeArr[index].height}${desc}</option>`);
+            this.sizeDropdown.addOption(`${sizeArr[index].width} x ${sizeArr[index].height}${desc}`);
         }
-
-        dropdown.append('<option>Custom</option>');
     }
 
     selectDefaultBoardSize() {
-
-        const dropdown = $('#board-size-dropdown');
-        dropdown[0].selectedIndex = this.isInchUnits ? sizesInch.length - 1 : 0;
-        dropdown.trigger('change');
+        this.sizeDropdown.setSelectedIndex(this.isInchUnits ? sizesInch.length - 1 : 0);
     }
 
     selectCustomBoardSize() {
-        const dropdown = $('#board-size-dropdown');
-        dropdown[0].selectedIndex = this.isInchUnits ? sizesInch.length : sizesMM.length;
-        dropdown.trigger('change');
+        this.sizeDropdown.setSelectedIndex(0);
     }
 
     onSizeUnitsChanged(event) {
-        this.isInchUnits = event.target.selectedIndex == 0;
+
+        this.isInchUnits = this.unitDropdown.getSelectedIndex() === 0;
+        const sizeWasSelected = this.sizeDropdown.getSelectedIndex() > -1;
+
         this.populateSizeDropdownList();
+        
+        if(!sizeWasSelected) {
+            this.sizeDropdown.clearSelection();
+            return;
+        }
+
         this.selectCustomBoardSize();
 
         const convertFunc = this.isInchUnits ? mmToInch : inchToMM;
