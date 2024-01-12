@@ -1,6 +1,5 @@
-import "./board.js"
-import "./events/form-submit.js";
+import App from "./app.js"
 
-const boardBgColor = "#232d3c";
-
+const app = new App();
+await app.start();
 

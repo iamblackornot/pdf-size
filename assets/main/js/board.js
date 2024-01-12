@@ -1,12 +1,18 @@
 import UI, { DropDownList } from "./ui.js"
 import { Poster } from "./poster.js"
-import { inchToMM, mmToInch } from "./misc.js"
+import { inchToMM, isNumber, mmToInch } from "./misc.js"
 
 const MIN_BOARD_WIDTH_INCH = 24;
-const MIN_BOARD_HEIGHT_INCH = 24;
-
 const MAX_BOARD_HEIGHT_INCH = 96;
+
+const MIN_BOARD_HEIGHT_INCH = 24;
 const MAX_BOARD_WIDTH_INCH = 96;
+
+const MIN_BOARD_WIDTH_MM = 594;
+const MAX_BOARD_WIDTH_MM = 2500;
+
+const MIN_BOARD_HEIGHT_MM = 841;
+const MAX_BOARD_HEIGHT_MM = 2500;
 
 const sizesInch = 
 [
@@ -36,7 +42,7 @@ const sizesMM =
     { "width": 1000, "height": 2000 },
 ];
 
-export class Board
+export default class Board
 {
     constructor() {
 
@@ -62,20 +68,34 @@ export class Board
 
         this.populateSizeDropdownList();
         this.sizeDropdown.clearSelection();
-
-        //this.initBoard();
-        //this.selectDefaultBoardSize();
-
-        //this.changeSize(width, height);
     }
 
-    initBoard() {
+    applyOptions(options) {
 
-        //$("#board-size-input-container")
+        if(!options) return;
+        if(!options.units) return;
 
-        // const dropdown = $('#size-units-dropdown');
-        // dropdown[0].selectedIndex = -1;
-        //this.populateSizeDropdownList();
+        this.unitDropdown.setSelectedIndex(
+            options.units.toLowerCase() === 'us' ? 0 : 1);
+
+        if(!options.width || !options.height) {
+            this.sizeDropdown.clearSelection();
+            return;
+        }
+
+        if(!isNumber(options.width) || !isNumber(options.height)) {
+            this.sizeDropdown.clearSelection();
+            return;
+        }
+
+        this.selectCustomBoardSize();
+
+        UI.disableComponent('size-units-dropdown');
+        UI.disableComponent('board-size-dropdown');
+        UI.disableComponent('board-width-input');
+        UI.disableComponent('board-height-input');
+
+        this.changeSize(+options.width, +options.height);
     }
 
     changeSize(width, height) {
@@ -102,16 +122,27 @@ export class Board
         $('.units').text(this.isInchUnits ? "in" : "mm");
 
         UI.enableComponent('upload');
-        UI.showElement('onboard-label');
-        UI.hideElement('board-tip');
 
+        if(UI.isVisible('board-tip')) {
+            UI.hideElement('board-tip');
+            UI.showElement('onboard-label');
+            return;
+        }
+
+        if($('#image').attr('src') !== '') UI.hideElement('onboard-label');
+        
         this.poster.OnPosterOrBoardSizeChanged();
     }
 
     onBoardInput() {
 
-        if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_INCH, MAX_BOARD_WIDTH_INCH)) return;
-        if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_INCH, MAX_BOARD_HEIGHT_INCH)) return;
+        if(this.isInchUnits) {
+            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_INCH, MAX_BOARD_WIDTH_INCH)) return;
+            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_INCH, MAX_BOARD_HEIGHT_INCH)) return;
+        } else {
+            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_MM, MAX_BOARD_WIDTH_MM)) return;
+            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_MM, MAX_BOARD_HEIGHT_MM)) return;
+        }
     
         const width = UI.getInputValue('board-width-input');
         const height = UI.getInputValue('board-height-input');
@@ -151,10 +182,6 @@ export class Board
         }
     }
 
-    selectDefaultBoardSize() {
-        this.sizeDropdown.setSelectedIndex(this.isInchUnits ? sizesInch.length - 1 : 0);
-    }
-
     selectCustomBoardSize() {
         this.sizeDropdown.setSelectedIndex(0);
     }
@@ -184,10 +211,3 @@ export class Board
         this.poster.setSource(widthIn, heightIn, base64img);
     }
 }
-
-
-
-const currBoard = new Board();
-export default currBoard;
-
-//export default new Board(MIN_BOARD_WIDTH, MIN_BOARD_HEIGHT);

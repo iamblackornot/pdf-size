@@ -1,11 +1,15 @@
-import { round, inchToMM, mmToInch } from "./misc.js"
-import UI from "./ui.js"
-import board from "./board.js"
-
-export const MIN_PRINT_WIDTH_INCH = 24;
-export const MIN_PRINT_HEIGHT_INCH = 24;
+import { round, inchToMM, upperBoundDouble, lowerBoundDouble } from "./misc.js"
+import UI, { SnapSlider } from "./ui.js"
 
 const inchSizeSnap = [ 24, 30, 36, 40, 42, 44, 47, 48, 56, 60, 64, 68, 72, 84, 90, 94, 96 ];
+const mmWidthSnap = [ 594, 700, 841, 910, 1000 ];
+const mmHeightSnap = [ 841, 1000, 1189, 1220, 1400, 2000 ];
+
+export const MIN_PRINT_WIDTH_INCH = inchSizeSnap[0];
+export const MIN_PRINT_HEIGHT_INCH = inchSizeSnap[0];
+
+export const MIN_PRINT_WIDTH_MM = mmWidthSnap[0];
+export const MIN_PRINT_HEIGHT_MM = mmHeightSnap[0];
 
 export class Poster
 {
@@ -14,7 +18,6 @@ export class Poster
         this.board = board;
         this.isInchUnits = board.isInchUnits;
 
-        UI.setInputValue('slider', 50);
         UI.setInputValue('poster-width', '');
         UI.setInputValue('poster-height', '');
 
@@ -22,13 +25,8 @@ export class Poster
         UI.disableComponent("poster-width");
         UI.disableComponent("poster-height");
 
-        //UI.hideElement("info-container");
-        //UI.hideElement("poster-slider-container");
-
-        $("#slider").on("input", this.onPosterSliderChange.bind(this));
-        $("#poster-width").on("input", this.onPosterWidthInput.bind(this));
-        $("#poster-height").on("input", this.onPosterHeightInput.bind(this));
-
+        this.slider = new SnapSlider('slider');
+        this.slider.subOnChangeEvent(this.onPosterSliderChange.bind(this));
     }
     
     calcMinPrintSize() {
@@ -37,10 +35,9 @@ export class Poster
             this.minPrintingWidth = MIN_PRINT_WIDTH_INCH;
             this.minPrintingHeight = MIN_PRINT_HEIGHT_INCH;
         } else {
-            this.minPrintingWidth = inchToMM(MIN_PRINT_WIDTH_INCH);
-            this.minPrintingHeight = inchToMM(MIN_PRINT_HEIGHT_INCH);
+            this.minPrintingWidth = MIN_PRINT_WIDTH_MM;
+            this.minPrintingHeight = MIN_PRINT_HEIGHT_MM;
         }
-
 
         if(this.aspectRatio >= 1) {
             if(this.minPrintingWidth / this.aspectRatio < this.minPrintingHeight) {
@@ -81,27 +78,20 @@ export class Poster
 
         if(!this.aspectRatio) return;
 
-        UI.disableComponent("slider");
         UI.disableComponent("poster-width");
         UI.disableComponent("poster-height");
         
         if(this.minPrintingWidth > this.board.width || this.minPrintingHeight > this.board.height) {
             UI.notifyError(`poster aspect ratio is too different from the board's one\n`
-                    +   `min printing size is ${MIN_PRINT_WIDTH_INCH}x${MIN_PRINT_HEIGHT_INCH}\n`
+                    +   `min printing size is ${this.getMinPrintSizeString()}\n`
                     +   `this poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
 
-            let minSliderValue = 0;
-            let maxSliderValue = 0;
-
             if(this.aspectRatio >= this.board.aspectRatio) {
-                minSliderValue = this.board.width;
-                maxSliderValue = this.board.width;
+                this.slider.setRange( [ this.board.width ] );
             } else {
-                minSliderValue = this.board.height;
-                maxSliderValue = this.board.height;
+                this.slider.setRange( [ this.board.height ] );
             }
 
-            UI.setSliderRange("slider", minSliderValue, maxSliderValue);
             this.onPosterSliderChange();
 
             return; 
@@ -109,28 +99,38 @@ export class Poster
 
         UI.resetNotifications();
         
-        let minSliderValue = 0;
-        let maxSliderValue = 0;
+        let values = [];
     
         if(this.aspectRatio >= this.board.aspectRatio) {
-            minSliderValue = this.minPrintingWidth, this.board.width;
-            maxSliderValue = this.board.width;
+
+            const sizeArr = this.getSizeSnapArr();
+
+            const minIndex = lowerBoundDouble(this.minPrintingWidth, sizeArr);
+            const maxIndex = upperBoundDouble(this.board.width, sizeArr);
+
+            values = sizeArr.slice(minIndex, maxIndex);
+
         } else {
-            minSliderValue = this.minPrintingHeight, this.board.height;
-            maxSliderValue = this.board.height;
+            
+            const sizeArr = this.getSizeSnapArr();
+
+            const minIndex = lowerBoundDouble(this.minPrintingHeight, sizeArr);
+            const maxIndex = upperBoundDouble(this.board.height, sizeArr);
+
+            values = sizeArr.slice(minIndex, maxIndex);
         }
     
-        UI.setSliderRange("slider", minSliderValue, maxSliderValue);
-        UI.setInputValue('slider', maxSliderValue);
+        this.slider.setRange(values);
     
         this.onPosterSliderChange();
     
-        UI.enableComponent("slider");
-        UI.enableComponent("poster-width");
-        UI.enableComponent("poster-height");
-
         UI.showElement("info-container");
         UI.showElement("poster-slider-container");
+    }
+
+    getMinPrintSizeString() {
+        if(this.board.isInchUnits) return `${MIN_PRINT_WIDTH_INCH}x${MIN_PRINT_HEIGHT_INCH}`;
+        return `${MIN_PRINT_WIDTH_MM}x${MIN_PRINT_HEIGHT_MM}`;
     }
 
     calcHeight(targetWidth) {
@@ -140,24 +140,32 @@ export class Poster
         return round(targetHeight * this.aspectRatio, 2);
     }
 
+    getSizeSnapArr() {
+
+        if(this.board.isInchUnits) return inchSizeSnap;
+
+        if(this.aspectRatio > this.board.aspectRatio) return mmWidthSnap;
+
+        return mmHeightSnap;
+    }
+
     onPosterSliderChange() {
 
-        const value = UI.getInputValue('slider');
+        const value = this.slider.getValue()
     
         if(this.aspectRatio >= this.board.aspectRatio) {
 
             const imageWidth = round(value / this.board.width, 2);
-            //const imageHeight = round(imageWidth / this.aspectRatio, 2);
 
             $(`#image`).css('width', `${imageWidth * 100}%`);
             $(`#image`).css('height', 'auto');
 
             UI.setInputValue('poster-width', value);
             UI.setInputValue('poster-height', round(value / this.aspectRatio, 2));
+
         } else {
 
             const imageHeight = Math.round(value * 100 / this.board.height);
-            //const imageWidth = round(imageHeight * this.aspectRatio, 2);
 
             $(`#image`).css('width', 'auto');
             $(`#image`).css('height', `${imageHeight}%`);
@@ -168,43 +176,4 @@ export class Poster
     
         $(`#image`).css('aspect-ratio', this.aspectRatio.toString());
     };
-    
-    onPosterWidthInput() {
-    
-        if(!UI.checkInput('poster-width', 'poster width', this.minPrintingWidth, this.board.width)) return;
-    
-        const width = UI.getInputValue('poster-width');
-        const height = round(width / this.aspectRatio, 2);
-    
-        UI.setInputValue('poster-height', height);
-    
-        if(!UI.checkPosterHeightValue()) return;
-    
-        UI.setInputValue('slider', this.aspectRatio > 0 ? width : height);
-    
-        this.onPosterSliderChange();
-    }
-    
-    onPosterHeightInput() {
-    
-        if(!UI.checkInput('poster-height', 'poster height', this.minPrintingHeight, this.board.height)) return;
-    
-        const height = UI.getInputValue('poster-height');
-        const width = round(height * this.aspectRatio, 2);
-    
-        UI.setInputValue('poster-width', width);
-    
-        if(!UI.checkPosterWidthValue()) return;
-    
-        UI.setInputValue('slider', this.aspectRatio > 0 ? width : height);
-    
-        this.onPosterSliderChange();
-    }
 }
-
-
-
-// var currPoster = new Poster(MIN_PRINT_WIDTH, MIN_PRINT_HEIGHT);
-// export default currPoster;
-
-//export default new Poster(MIN_PRINT_WIDTH, MIN_PRINT_HEIGHT);

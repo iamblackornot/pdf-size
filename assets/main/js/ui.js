@@ -73,6 +73,10 @@ export default class UI
     static hideElement(id) {
         $(`#${id}`).css('display', 'none');
     }
+
+    static isVisible(id) {
+        return $(`#${id}`).css('display') !== 'none';
+    }
     
     static checkInput(id, desc, minValue, maxValue) {
 
@@ -96,19 +100,6 @@ export default class UI
         this.hideInputError(id);
         return true;
     }
-
-    static setSliderRange(id, min, max) {
-        $(`#${id}`).attr('min', min);
-        $(`#${id}`).attr('max', max);
-
-        if(min >= max) {
-            UI.setInputValue('slider', 50);
-            //UI.disableComponent('slider');
-            return;
-        }
-
-       // UI.enableComponent('slider');
-    }
     static setSpanText(id, text) {
         $(`#${id}`).text(text);
     }
@@ -120,8 +111,8 @@ export class DropDownList {
         this.dropdown = $(`#${id}`);
     }
 
-    addOption(text) {
-        this.dropdown.append(`<option>${text}</option>`);
+    addOption(text, isDefault = false) {
+        this.dropdown.append(`<option ${isDefault ? 'selected' : ''}>${text}</option>`);
     }
     clear() {
         this.dropdown.empty();
@@ -141,5 +132,38 @@ export class DropDownList {
     }
     subOnChangeEvent(delegate) {
         this.dropdown.on('change', delegate);
+    }
+}
+
+export class SnapSlider {
+    constructor(id) {
+        this.slider = $(`#${id}`);
+        this.slider.val(0);
+    }
+
+    setRange(valueArr) {
+
+        this.values = valueArr ?? [ 0 ];
+
+        const min = 0;
+        const max = this.values.length - 1;
+
+        this.slider.attr('min', min);
+        this.slider.attr('max', max);
+        this.slider.val(max);
+
+        if(min === max) {
+            this.slider.attr('disabled', true);
+        } else {
+            this.slider.removeAttr('disabled');
+        }
+    }
+
+    getValue() {
+        return this.values[this.slider.val()];
+    }
+
+    subOnChangeEvent(delegate) {
+        this.slider.on('input', delegate);
     }
 }

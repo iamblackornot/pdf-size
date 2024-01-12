@@ -1,0 +1,32 @@
+// options for a predefined board
+//
+// units=< us or eu >( us for inches, eu for mm )
+// width=< number >  ( 24-96 in or 594-2500 mm )
+// height=< number > ( 24-96 in or 841-2500 mm )
+//
+// you define either only 'units' or all 3 options
+//
+// examples:
+//
+// units=us 
+//
+// (valid)
+//
+//-----------------
+// 
+// units=eu
+// width=2000
+// 
+// (only 'units' will be taken into account, 'width' without 'height' is ignored)
+// 
+//------------------ 
+//
+// width=1000
+// height=2000
+// 
+// (ill-formed, 'width' and 'height' options are ignored without 'units' set)
+// 
+
+units=us
+width=96
+height=48

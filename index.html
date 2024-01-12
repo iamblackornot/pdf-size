@@ -160,7 +160,7 @@
         <div class="controls-container">
             <div class="input-group" id="board-size-select">
                 <select class="custom-select" id="size-units-dropdown">
-                    <option value="0">in</option>
+                    <option value="0" selected>in</option>
                     <option value="1">mm</option>
                 </select>
                 <select class="custom-select" id="board-size-dropdown"></select>
@@ -179,7 +179,7 @@
                     <div>x</div>
                     <input type="text" id="poster-height" maxlength="5" size="5">
                 </div>
-                <input type="range" class="form-range" min="0" max="100" step="0.01" value="50" id="slider"> 
+                <input type="range" class="form-range" min="0" max="0" step="1" value="0" id="slider"> 
             </div>
 
             <div class="notification-container" id="notify"></div>
