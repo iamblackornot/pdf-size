@@ -110,6 +110,8 @@ export default class Board
         UI.setInputValue('board-width-input', this.width);
         UI.setInputValue('board-height-input', this.height);
 
+        if(!this.checkBoardSize()) return;
+
         if(this.aspectRatio >= 1) {
             $(`#board`).css('width', '100%');
             $(`#board`).css('height', 'auto');
@@ -136,18 +138,25 @@ export default class Board
 
     onBoardInput() {
 
-        if(this.isInchUnits) {
-            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_INCH, MAX_BOARD_WIDTH_INCH)) return;
-            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_INCH, MAX_BOARD_HEIGHT_INCH)) return;
-        } else {
-            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_MM, MAX_BOARD_WIDTH_MM)) return;
-            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_MM, MAX_BOARD_HEIGHT_MM)) return;
-        }
+        if(!this.checkBoardSize()) return;
     
         const width = UI.getInputValue('board-width-input');
         const height = UI.getInputValue('board-height-input');
 
         this.changeSize(+width, +height);
+    }
+
+    checkBoardSize() {
+
+        if(this.isInchUnits) {
+            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_INCH, MAX_BOARD_WIDTH_INCH)) return false;
+            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_INCH, MAX_BOARD_HEIGHT_INCH)) return false;
+        } else {
+            if(!UI.checkInput('board-width-input', 'board width', MIN_BOARD_WIDTH_MM, MAX_BOARD_WIDTH_MM)) return false;
+            if(!UI.checkInput('board-height-input', 'board height', MIN_BOARD_HEIGHT_MM, MAX_BOARD_HEIGHT_MM)) return false;
+        }
+
+        return true;
     }
 
     onSizeSelectionChanged(event) {
@@ -199,7 +208,6 @@ export default class Board
         }
 
         this.selectCustomBoardSize();
-
         const convertFunc = this.isInchUnits ? mmToInch : inchToMM;
 
         this.changeSize(convertFunc(this.width), convertFunc(this.height));

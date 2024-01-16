@@ -18,12 +18,12 @@ export function mmToInch(mmValue) {
 
 export function lowerBoundDouble(value, sortedArr) {
     const res = sortedArr.findIndex((el) => equalDouble(el, value) || greaterDouble(el, value));
-    return res > 0 ? res : sortedArr.length;
+    return res >= 0 ? res : sortedArr.length;
 }
 
 export function upperBoundDouble(value, sortedArr) {
     const res = sortedArr.findIndex((el) => greaterDouble(el, value));
-    return res > 0 ? res : sortedArr.length;
+    return res >= 0 ? res : sortedArr.length;
 }
 
 const EPSILON = 0.01;

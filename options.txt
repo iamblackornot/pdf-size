@@ -27,6 +27,6 @@
 // (ill-formed, 'width' and 'height' options are ignored without 'units' set)
 // 
 
-units=us
-width=96
-height=48
+//units=us
+//width=96
+//height=48

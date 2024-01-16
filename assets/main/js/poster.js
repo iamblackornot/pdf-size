@@ -74,26 +74,36 @@ export class Poster
         this.OnPosterOrBoardSizeChanged();
     }
 
+    OnChangeStub() {
+
+        if(this.aspectRatio >= this.board.aspectRatio) {
+            this.slider.setRange( [ this.board.width ] );
+        } else {
+            this.slider.setRange( [ this.board.height ] );
+        }
+
+        this.onPosterSliderChange();
+    }
+
     OnPosterOrBoardSizeChanged() {
 
         if(!this.aspectRatio) return;
 
         UI.disableComponent("poster-width");
         UI.disableComponent("poster-height");
+
+        if(!this.board.checkBoardSize()) {
+
+            this.OnChangeStub();
+            return; 
+        }
         
         if(this.minPrintingWidth > this.board.width || this.minPrintingHeight > this.board.height) {
             UI.notifyError(`poster aspect ratio is too different from the board's one\n`
                     +   `min printing size is ${this.getMinPrintSizeString()}\n`
                     +   `this poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
 
-            if(this.aspectRatio >= this.board.aspectRatio) {
-                this.slider.setRange( [ this.board.width ] );
-            } else {
-                this.slider.setRange( [ this.board.height ] );
-            }
-
-            this.onPosterSliderChange();
-
+            this.OnChangeStub();
             return; 
         }
 
