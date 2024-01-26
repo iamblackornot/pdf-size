@@ -91,6 +91,7 @@ export class Poster
 
         UI.disableComponent("poster-width");
         UI.disableComponent("poster-height");
+        UI.hideElement('poster-size-controls');
 
         if(!this.board.checkBoardSize()) {
 
@@ -99,9 +100,9 @@ export class Poster
         }
         
         if(this.minPrintingWidth > this.board.width || this.minPrintingHeight > this.board.height) {
-            UI.notifyError(`poster aspect ratio is too different from the board's one\n`
+            UI.notifyError(`your poster aspect ratio is too different from the max poster's one\n`
                     +   `min printing size is ${this.getMinPrintSizeString()}\n`
-                    +   `this poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
+                    +   `your poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
 
             this.OnChangeStub();
             return; 
@@ -129,13 +130,23 @@ export class Poster
 
             values = sizeArr.slice(minIndex, maxIndex);
         }
+
+        if(values.length > 1) {
+            UI.hideElement('only-one-size-tip');
+            UI.showElement('slider-tip');
+            UI.showElement("slider");
+        } else {
+            UI.hideElement('slider-tip');
+            UI.showElement('only-one-size-tip');
+            UI.hideElement("slider");
+        }
     
         this.slider.setRange(values);
     
         this.onPosterSliderChange();
     
-        UI.showElement("info-container");
-        UI.showElement("poster-slider-container");
+        UI.showElement("poster-size-container");
+        UI.showElement('poster-size-controls');
     }
 
     getMinPrintSizeString() {

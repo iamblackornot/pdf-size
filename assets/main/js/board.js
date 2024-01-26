@@ -72,6 +72,9 @@ export default class Board
 
     applyOptions(options) {
 
+        UI.showElement('select-board-size-text');
+        UI.hideElement('fixed-board-size-text');
+
         if(!options) return;
         if(!options.units) return;
 
@@ -88,12 +91,18 @@ export default class Board
             return;
         }
 
+        
         this.selectCustomBoardSize();
-
+        
         UI.disableComponent('size-units-dropdown');
         UI.disableComponent('board-size-dropdown');
         UI.disableComponent('board-width-input');
         UI.disableComponent('board-height-input');
+        
+        UI.hideElement('board-size-select');
+        
+        UI.hideElement('select-board-size-text');
+        UI.showElement('fixed-board-size-text');
 
         this.changeSize(+options.width, +options.height);
     }
