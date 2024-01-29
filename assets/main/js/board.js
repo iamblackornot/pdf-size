@@ -68,6 +68,8 @@ export default class Board
 
         this.populateSizeDropdownList();
         this.sizeDropdown.clearSelection();
+
+        $('.units').text(this.isInchUnits ? "in" : "mm");
     }
 
     applyOptions(options) {
@@ -207,17 +209,21 @@ export default class Board
     onSizeUnitsChanged(event) {
 
         this.isInchUnits = this.unitDropdown.getSelectedIndex() === 0;
-        const sizeWasSelected = this.sizeDropdown.getSelectedIndex() > -1;
+        const prevSelected = this.sizeDropdown.getSelectedIndex();
 
         this.populateSizeDropdownList();
+
+        $('.units').text(this.isInchUnits ? "in" : "mm");
         
-        if(!sizeWasSelected) {
+        if(prevSelected < 0) {
             this.sizeDropdown.clearSelection();
             return;
         }
 
         this.selectCustomBoardSize();
         const convertFunc = this.isInchUnits ? mmToInch : inchToMM;
+
+        if(!this.width || !this.height) return;
 
         this.changeSize(convertFunc(this.width), convertFunc(this.height));
         this.poster.setSize(convertFunc(this.poster.width), convertFunc(this.poster.height));

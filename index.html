@@ -157,7 +157,7 @@
         </div>
         <div class="controls-container">
             <div class="info-container" id="select-board-size-text" style="display:none">
-                <span class="semi-bold-text">Select</span> the max poster size allowed by the meeting
+                <span class="semi-bold-text">Select</span> or enter the maximum poster size allowed at the meeting
             </div>
             <div class="info-container" id="fixed-board-size-text" style="display:none">
                 The meeting allows poster up to this size:
@@ -170,22 +170,19 @@
                 <select class="custom-select" id="board-size-dropdown"></select>
             </div>
             <div class="size-input-container" id="board-size-input-container" style="display:none"> 
-                <div class="input-label">W:</div>
+                <div class="input-label">Width(<span class="units"></span>)</div>
                 <input type="text" id="board-width-input" maxlength="5" size="5">
                 <div style="width:0.25rem"></div>
-                <div class="input-label">H:</div>
                 <input type="text" id="board-height-input" maxlength="5" size="5">
-                <div class="input-label">
-                    <span class="units"></span>
-                </div>
+                <div class="input-label">Height(<span class="units"></span>)</div>
             </div>
             <div class="poster-size-container" id="poster-size-container" style="display:none">
                 <hr />
                 <div class="info-container">
-                    Your uploaded poster size is 
-                    <span id="source-poster-width" class="semi-bold-text"></span> 
-                    x 
-                    <span id="source-poster-height" class="semi-bold-text"></span>&nbsp;<span class="units"></span>
+                    Your poster size is 
+                    <span id="source-poster-width" class="semi-bold-text"></span><span class="units semi-bold-text"></span>&nbsp;wide
+                    by 
+                    <span id="source-poster-height" class="semi-bold-text"></span><span class="units semi-bold-text"></span>&nbsp;tall
                 </div>
                 <hr />
                 <div class="poster-size-controls" id="poster-size-controls">
@@ -197,14 +194,11 @@
                     </div>
                     <div class="poster-slider-container" id="poster-slider-container">
                         <div class="size-input-container"> 
-                            <div class="input-label">W:</div>
+                            <div class="input-label">Width(<span class="units"></span>)</div>
                             <input type="text" id="poster-width" maxlength="5" size="5">
                             <div style="width:0.25rem"></div>
-                            <div class="input-label">H:</div>
                             <input type="text" id="poster-height" maxlength="5" size="5">
-                            <div class="input-label">
-                                <span class="units"></span>
-                            </div>
+                            <div class="input-label">Height(<span class="units"></span>)</div>
                         </div>
                         <input type="range" class="form-range" min="0" max="0" step="1" value="0" id="slider"> 
                     </div>

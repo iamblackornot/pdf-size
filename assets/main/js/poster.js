@@ -100,10 +100,10 @@ export class Poster
         }
         
         if(this.minPrintingWidth > this.board.width || this.minPrintingHeight > this.board.height) {
-            UI.notifyError(`your poster aspect ratio is too different from the max poster's one\n`
-                    +   `min printing size is ${this.getMinPrintSizeString()}\n`
-                    +   `your poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
-
+            // UI.notifyError(`your poster aspect ratio is too different from the max poster's one\n`
+            //         +   `min printing size is ${this.getMinPrintSizeString()}\n`
+            //         +   `your poster's min size possible is ${this.minPrintingWidth}x${this.minPrintingHeight}`);
+            UI.notifyError('Your poster\'s size or orientation is significantly different\nfrom the minimum allowable size')
             this.OnChangeStub();
             return; 
         }
